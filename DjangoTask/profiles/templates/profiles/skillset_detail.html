@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+
+
+<div class="container detail mb-4">
+    <div class="detail-body">
+        <div class="body-header">
+            <div class="profile-div">
+                <div class="profile-details">
+                    <span class="h1">Hi, I'm {{profile.name}},</span>
+
+                    <span class="h2">Nice to meet you!</span>
+                </div>
+                <div class="profile-contact">
+                    <a href="{{profile.cv.url}}" download mb-2><button class="profile-btn cv-btn">Download CV</button></a>
+                    <a href="mailto:{{profile.email}}" mb-2><button class="profile-btn ctc-btn">Email me</button></a>
+                    
+                    <a href="/{{profile.pk}}/delete/" mb-2><button class="profile-btn del-btn">Delete Profile</button></a>
+                    
+                </div>
+
+            </div>
+            <div class="profile-img">
+                <img src="{{profile.photo.url}}" alt="">
+            </div>
+        </div>
+        <div class="profile-skills">
+            <div class="h4">Coding Skills</div>
+            {%for skill in skills%}
+
+
+
+            <div class="profile-skill-div">
+                <div class="skill-name">
+                    <div class="h6">{{skill.skill_name}}</div>
+
+                    <!-- Button trigger modal -->
+                    <button type="button" data-toggle="modal" data-target="#edit-form-{{skill.id}}" class="edit-profile">
+                        Edit
+                    </button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="edit-form-{{skill.id}}" tabindex="-1" role="dialog"
+                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLabel">Edit Form</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" style="color: red; border: none; background:none;">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <!-- edit form -->
+                                <div class="modal-body">
+                                    <form action="/post/edit/{{skill.id}}/" method="POST">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="next" value="{{request.path}}">
+                                    <div class="form-group">
+                                        <label>Skill</label>
+                                        <input type="text" value="{{skill.skill_name}}" name="skill_name"class="form-control" >
+                                    </div>
+                                    <div class="form-group mb-2">
+                                        <label>Proficiency Level</label>
+                                    
+                                        <input type="number" name="proficiency_level" value="{{skill.proficiency_level}}" class="form-control" min="1" max="100">
+                                        
+                                    </div>
+                                        <input type="submit" value="submit" class="btn btn-primary">
+                                    </form>
+                                </div>
+                               
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="p-div">
+                    <div class="p-level">
+                        <div class="overlay" style="width:{{skill.proficiency_level}}%;"></div>
+                    </div>
+                    <div class="p-level-value">{{skill.proficiency_level}}%</div>
+
+                </div>
+            </div>
+
+            {%endfor%}
+
+
+        </div>
+
+        <form class="create-skill" action="/post/create-skill/{{profile.id}}/" method="POST">
+            <div class="h4">Create New Skill</div>
+            {% csrf_token %}
+            <input type="hidden" name="next" value="{{request.path}}">
+
+            <div class="form-row">
+                <div class="form-row row">
+                    <div class="form-group col-md-6">
+                        <label for="inputSkill">Skill</label>
+                        <input type="text" class="form-control" id="inputSkill" name="skill_name" placeholder="PHP, Python">
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label for="inputPl" >Proficiency Level</label>
+                        <input type="number" class="form-control" id="inputPl" name="proficiency_level" min="1" max="100" placeholder="1 to 100">
+                    </div>
+                    <div class="form-group col-md-2">
+                        <label for="inputPl"></label>
+                        <input type="submit" class="form-control" value="Post">
+                    </div>
+                </div>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+</div>
+
+
+
+
+
+
+{% endblock content %}

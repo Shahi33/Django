@@ -1,4 +1,4 @@
-"""DjangoTask URL Configuration
+"""blog URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -13,11 +13,31 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
-from django.urls import path, include
+
+from django.urls import path
+from . import views
 from django.conf import settings
 from django.conf.urls.static import static
+# from .views import AboutView,  CreateProfile
+from .views import (
+
+    ProfileDetailView, 
+    ProfileListView,
+    ProfileView,
+    ProfileEditView,
+    SkillCreateView,
+    ProfileDeleteView
+
+)
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include(('profiles.urls','profiles'), namespace = 'profiles')),
+
+
+    path('',ProfileListView.as_view(),name='home'),
+    path('post/<int:pk>/',ProfileDetailView.as_view(),name='post-detail'),
+    path('post/new/',ProfileView.as_view(),name='post-create'),
+    path('post/edit/<id>/',ProfileEditView.as_view(),name='post-edit'),
+    path('post/create-skill/<id>/',SkillCreateView.as_view(),name='create-skill'),
+    path('<pk>/delete/', ProfileDeleteView.as_view()),
+
+
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

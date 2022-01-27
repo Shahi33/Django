@@ -1,0 +1,38 @@
+// scss for header
+
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 48px;
+    border-bottom: 1px solid #D3D3D3;
+    margin-bottom: 10px;
+
+
+    .logo{
+        height: 75px;
+        width:75px;
+        object-fit: contain;
+        img{
+            height: 100%;
+            width: 100%;
+            
+        }
+    }
+
+    .nav{
+        a{
+            margin-left: 40px;
+            text-decoration: none;
+            color: black;
+            font-weight: 600;
+            &:hover{
+                font-weight: 700;
+                color: $primary-color;
+            }
+        }
+        .add-portfolio{
+            word-spacing: -3px;
+        }
+    }
+}
