@@ -8,11 +8,12 @@ from django.dispatch import receiver
 
 
 class Profile(models.Model):
+    '''Profile models'''
     name = models.CharField(max_length=100)
     email = models.EmailField()
     cv = models.FileField(upload_to='cv/')
     photo = models.ImageField(upload_to='photo/')
-    # skill = models.ForeignKey(SkillSet, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.name
@@ -20,6 +21,7 @@ class Profile(models.Model):
         return self.skillset_set.all()
 
 class SkillSet(models.Model):
+    '''SkillSet models with foreign key profile'''
     profile = models.ForeignKey(Profile, on_delete=models.DO_NOTHING)
     skill_name = models.CharField(max_length=100)
     proficiency_level = models.IntegerField()
@@ -30,8 +32,9 @@ class SkillSet(models.Model):
     def get_absolute_url(self):
         return reverse ('profiles:post-detail', kwargs = {'pk':self.pk})
 
+
     @receiver(post_delete, sender=Profile)
     def delete_skill(sender, instance, **kwargs):
-        
+        '''delete skill when profile is deleted'''
         SkillSet.objects.filter(profile = instance.id).delete()
 

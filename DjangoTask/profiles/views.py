@@ -1,3 +1,9 @@
+""" DJANGOTASK VIEWS
+
+Views of profiles app 
+
+"""
+
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from .forms import SkillSetForm, ProfileForm
@@ -12,6 +18,9 @@ from django.http  import HttpResponse, HttpResponseRedirect
 
 
 class ProfileListView(ListView):
+    '''
+        displays all existing profile in index page
+    '''
     model = SkillSet
     template_name = 'profiles/index.html'
     context_object_name = 'posts'
@@ -21,6 +30,10 @@ class ProfileListView(ListView):
         return context
 
 class ProfileDetailView(DetailView):
+    '''
+        takes id and display detail page of that profile
+        
+    '''
     model = Profile
     template_name = 'profiles/skillset_detail.html'
     
@@ -36,11 +49,12 @@ class ProfileDetailView(DetailView):
 
 
 class SkillCreateView(DetailView):
+    '''adds new skills to existing profile'''
     model = SkillSet
     template_name = 'profiles/skillset_detail.html'
-    # context_object_name = 'profiles'
+
     def post(self, request, id):
-        # context = {}
+
         profile_id = id
         profile = Profile.objects.get(id=id)
         skill_name = request.POST.get('skill_name')
@@ -48,26 +62,27 @@ class SkillCreateView(DetailView):
 
         skill = SkillSet.objects.create(profile=profile,skill_name=skill_name,proficiency_level=proficiency_level )
         skill.save()
-
+        # next --> reuqest url comes from form
         next = request.POST.get('next','/')
         return HttpResponseRedirect(next)
     
         
 
 class ProfileEditView(DetailView):
+    '''
+    Edit skillset in profiles
+    '''
     model = Profile
     template_name = 'profiles/skillset_detail.html'
-    # context_object_name = 'profiles'
+
     def post(self, request, id):
 
-
-        # context = {}
         skill_id = id
         skill = SkillSet.objects.get(id=id)
         skill.skill_name = request.POST.get('skill_name')
         skill.proficiency_level = request.POST.get('proficiency_level')
         skill.save()
-
+        # next --> reuqest url comes from form
         next = request.POST.get('next','/')
         return HttpResponseRedirect(next)
 
@@ -76,32 +91,39 @@ class ProfileEditView(DetailView):
 
 
 class ProfileDeleteView(DeleteView):
+    '''Django DeleteView to delete profile'''
     model = Profile
     success_url = '/'
     
 
 
 class ProfileView(View):
-
+    '''saves and gets ProfileForm and SkillSetForm '''
     def get(self, request, id=None):
-        if id:
-            profile = get_object_or_404(Profile, id = id)
-            profile_form = ProfileForm(instance = profile)
-            skill_set = skill_set.objects.all()
-            skill_set_forms = [SkillSetForm(prefix=str(skill_set.id),instance=skill_set) for skill_set in skill_sets]
-        else:
-            profile_form = ProfileForm(instance=Profile())
-            skill_set_forms = [SkillSetForm(prefix=str(x),instance=SkillSet()) for x in range(1)]
-            template = 'profiles/skillset_form.html'
+        # if id:
+        #     profile = get_object_or_404(Profile, id = id)
+        #     profile_form = ProfileForm(instance = profile)
+        #     skill_set = skill_set.objects.all()
+        #     skill_set_forms = [SkillSetForm(prefix=str(skill_set.id),instance=skill_set) for skill_set in skill_sets]
+        # else:
+
+        profile_form = ProfileForm(instance=Profile())
+        # one form of skillset
+        skill_set_forms = [SkillSetForm(prefix=str(x),instance=SkillSet()) for x in range(1)]
+        template = 'profiles/skillset_form.html'
         context = {'profile_form':profile_form, 'skill_set_forms':skill_set_forms}
         return render (request, template, context)
 
     def post(self, request, id=None):
+        '''saves profile along with skills'''
+
         context = {}
-        if id:
-            return self.put(request, id)
+        # if id:
+        #     return self.put(request, id)
         profile_form = ProfileForm(request.POST,request.FILES, instance=Profile())
+        # get range value for loop through url
         val = int(self.request.GET.get('range')) or 1
+        # multiple SkillSet forms for one profile initialized
         skill_set_forms = [SkillSetForm(request.POST, prefix=str(x), instance=SkillSet()) for x in range(val)]
 
         if profile_form.is_valid() and [cf.is_valid() for cf in skill_set_forms]:

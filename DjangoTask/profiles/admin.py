@@ -1,7 +1,8 @@
+'''
+Register models in admin
+'''
+
 from django.contrib import admin
-
-# Register your models here.
-
 from .models import SkillSet, Profile
 
 class AdminSkillSet(admin.ModelAdmin):

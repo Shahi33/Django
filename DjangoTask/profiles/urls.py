@@ -18,7 +18,6 @@ from django.urls import path
 from . import views
 from django.conf import settings
 from django.conf.urls.static import static
-# from .views import AboutView,  CreateProfile
 from .views import (
 
     ProfileDetailView, 
@@ -31,12 +30,17 @@ from .views import (
 )
 urlpatterns = [
 
-
+    # home url
     path('',ProfileListView.as_view(),name='home'),
+    # url to display profile page
     path('post/<int:pk>/',ProfileDetailView.as_view(),name='post-detail'),
+    # url for profile form
     path('post/new/',ProfileView.as_view(),name='post-create'),
+    # url for editing form
     path('post/edit/<id>/',ProfileEditView.as_view(),name='post-edit'),
+    # url to create new skill
     path('post/create-skill/<id>/',SkillCreateView.as_view(),name='create-skill'),
+    # delete url
     path('<pk>/delete/', ProfileDeleteView.as_view()),
 
 

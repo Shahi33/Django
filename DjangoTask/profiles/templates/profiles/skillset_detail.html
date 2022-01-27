@@ -16,7 +16,7 @@
                 <div class="profile-contact">
                     <a href="{{profile.cv.url}}" download mb-2><button class="profile-btn cv-btn">Download CV</button></a>
                     <a href="mailto:{{profile.email}}" mb-2><button class="profile-btn ctc-btn">Email me</button></a>
-                    
+                    <!-- deletes profile -->
                     <a href="/{{profile.pk}}/delete/" mb-2><button class="profile-btn del-btn">Delete Profile</button></a>
                     
                 </div>
@@ -28,6 +28,7 @@
         </div>
         <div class="profile-skills">
             <div class="h4">Coding Skills</div>
+            <!-- displays skills of one profile -->
             {%for skill in skills%}
 
 
@@ -54,6 +55,7 @@
                                 </div>
                                 <!-- edit form -->
                                 <div class="modal-body">
+                                    <!-- form to edit skills -->
                                     <form action="/post/edit/{{skill.id}}/" method="POST">
                                         {% csrf_token %}
                                         <input type="hidden" name="next" value="{{request.path}}">
@@ -80,6 +82,7 @@
 
                 <div class="p-div">
                     <div class="p-level">
+                        <!-- proficiency level bar -->
                         <div class="overlay" style="width:{{skill.proficiency_level}}%;"></div>
                     </div>
                     <div class="p-level-value">{{skill.proficiency_level}}%</div>
@@ -92,6 +95,7 @@
 
         </div>
 
+        <!-- form to add new skill in existing profile -->
         <form class="create-skill" action="/post/create-skill/{{profile.id}}/" method="POST">
             <div class="h4">Create New Skill</div>
             {% csrf_token %}
