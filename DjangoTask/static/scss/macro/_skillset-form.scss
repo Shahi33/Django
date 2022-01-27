@@ -1,0 +1,38 @@
+
+#add-another{
+    cursor: pointer;
+    border: 1px solid $secondary-color;
+    background-color: $secondary-color;
+    padding: 8px 12px;
+    color: white;
+    margin-bottom: 10px;
+
+    &:hover{
+        background-color: white;
+        border: 1px solid $secondary-color;
+        color: $secondary-color;
+    }
+}
+
+.submit-profile{
+   
+    border: 1px solid $primary-color;
+    background-color: $primary-color;
+    padding: 8px 12px;
+    color: white;
+    margin-bottom: 10px;
+
+    &:hover{
+        background-color: white;
+        border: 1px solid $primary-color;
+        color: $primary-color;
+    }
+}
+
+@media screen and (max-width: 426px){
+    .skill-btn-div{
+        flex-direction: column !important;
+    }
+
+
+}

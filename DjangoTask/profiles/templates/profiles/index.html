@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="container">
+    <!-- Title -->
+    <div class="home-title-div mb-4">
+        <span class="home-title">Our Team</span>
+    </div>
+    <div class="row">
+        <!-- lists all profiles from context -->
+        {% for profile in profiles %}
+
+        <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 mb-2">
+
+            <div class="card " style="padding: 10px;">
+                <div class="d-flex justify-content-center">
+                    <div class="cardd-img">
+                        <img class="card-img-top" src="{{profile.photo.url}}" alt="Card image cap"
+                            style="border-radius: 50%;">
+                    </div>
+                </div>
+                <div class="card-body ">
+                    <h5 class="card-title">{{profile}}</h5>
+                    <p class="card-text">{{profile.email}}</p>
+                    <!-- link goes to detail view of profile -->
+                    <a href="{% url 'profiles:post-detail' profile.id %}" class="btn btn-primary">View More</a>
+                </div>
+            </div>
+        </div>
+        {%endfor%}
+
+    </div>
+</div>
+
+
+
+
+
+{% endblock content %}
